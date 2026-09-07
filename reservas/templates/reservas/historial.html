@@ -1,0 +1,308 @@
+{% extends 'reservas/base.html' %}
+{% block title %}Perfil del jugador | CanchaYa{% endblock %}
+{% block content %}
+<div class="min-h-screen bg-white text-slate-900">
+    <main class="mx-auto max-w-7xl px-5 pb-24 pt-32 lg:px-8">
+
+        <!-- Cabecera / Perfil del Jugador -->
+        <section class="border-b border-emerald-900/50 pb-10">
+            <p class="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.24em] text-emerald-600">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20"/></svg>
+                Match Pass
+            </p>
+            {% if jugador %}
+                <h1 class="mt-4 text-3xl font-extrabold tracking-tight">{{ jugador.get_full_name|default:jugador.username }}</h1>
+                <span class="mt-4 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-900/60 px-4 py-1.5 text-xs font-bold text-emerald-600">
+                    <span class="relative flex h-2 w-2">
+                        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-600 opacity-75"></span>
+                        <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-600"></span>
+                    </span>
+                    Jugador Amateur ⚽
+                </span>
+            {% else %}
+                <h1 class="mt-4 text-3xl font-extrabold tracking-tight">Tu perfil de jugador</h1>
+            {% endif %}
+        </section>
+
+        {% if not request.user.is_authenticated %}
+            <!-- Consulta de perfil por identificador -->
+            <form method="post" class="mt-8 flex flex-col gap-3 rounded-2xl border border-emerald-900/50 bg-emerald-950 text-white p-5 sm:flex-row sm:items-end">
+                {% csrf_token %}
+                <div class="flex-1">
+                    <label for="id_identificador" class="mb-2 block text-xs font-bold uppercase tracking-wider text-slate-500">
+                        {{ consulta_form.identificador.label }}
+                    </label>
+                    {{ consulta_form.identificador }}
+                </div>
+                <button type="submit" class="rounded-xl bg-emerald-600 px-6 py-3 font-bold text-white transition hover:bg-emerald-700">
+                    Cargar perfil
+                </button>
+            </form>
+        {% endif %}
+
+        {% if jugador %}
+            <!-- KPIs / Estadísticas superiores -->
+            <section class="mt-10">
+                <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                    <!-- Partidos Jugados -->
+                    <div class="rounded-2xl border border-emerald-900/50 bg-emerald-950 text-white p-4 shadow-lg transition-all hover:border-emerald-400">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-900/60 text-slate-500">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 7l4.76 3.45-1.82 5.6H9.06l-1.82-5.6L12 7z"/></svg>
+                            </div>
+                            <p class="text-xs font-bold text-slate-500">Partidos<br>Jugados</p>
+                        </div>
+                        <p class="mt-3 font-display text-4xl font-bold text-white">{{ total_partidos }}</p>
+                    </div>
+                    <!-- Goles -->
+                    <div class="rounded-2xl border border-emerald-900/50 bg-emerald-950 text-white p-4 shadow-lg transition-all hover:border-emerald-400">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-900/40 text-emerald-600">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-5.3 6.5L8 11m0 0l-1.3 3.5L8 14l1.3.5L8 11zm5-4l.7 1.5.8-1.5H13zm2.6 6h1.4L15 11l-1.6 2h2.2zm1.4 1.2L13 16l3.6 1.2z"/></svg>
+                            </div>
+                            <p class="text-xs font-bold text-slate-500">Goles</p>
+                        </div>
+                        <p class="mt-3 font-display text-4xl font-bold text-emerald-600">{{ goles_anotados }}</p>
+                    </div>
+<!-- Victorias -->
+                    <div class="rounded-2xl border border-emerald-900/50 bg-emerald-950 text-white p-4 shadow-lg transition-all hover:border-emerald-400">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-400/10 text-amber-400">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v6a5 5 0 0 1-10 0V4z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3"/></svg>
+                            </div>
+                            <p class="text-xs font-bold text-slate-500">Victorias</p>
+                        </div>
+                        <p class="mt-3 font-display text-4xl font-bold text-amber-400">{{ ganados }}</p>
+                    </div>
+                    <!-- Derrotas -->
+                    <div class="rounded-2xl border border-emerald-900/50 bg-emerald-950 text-white p-4 shadow-lg transition-all hover:border-emerald-400">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-rose-500/10 text-rose-500">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+                            </div>
+                            <p class="text-xs font-bold text-slate-500">Derrotas</p>
+                        </div>
+                        <p class="mt-3 font-display text-4xl font-bold text-rose-500">{{ perdidos }}</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRÓXIMOS PARTIDOS · Match Ticket / Stadium Pass -->
+            <section class="mt-16">
+                <div class="flex items-center justify-between gap-3">
+                    <h2 class="font-display text-3xl font-bold tracking-tight">Próximos Partidos</h2>
+                    <span class="rounded-full bg-emerald-900/40 px-3 py-1 text-xs font-bold text-emerald-600">{{ proximos|length }} próx.</span>
+                </div>
+                <div class="mt-6 grid gap-6 lg:grid-cols-2">
+                    {% for reserva in proximos %}
+                    <article class="relative overflow-hidden rounded-2xl border border-emerald-900/50 bg-emerald-950 text-white p-6 shadow-lg transition-all hover:border-emerald-600/60 hover:shadow-emerald-600/20 hover:shadow-2xl">
+                        <!-- Línea decorativa superior estilo ticket -->
+                        <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-emerald-400 via-emerald-300/60 to-transparent"></div>
+
+                        <!-- Cabecera : fecha + badge de estado -->
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-900/60 px-3 py-1 text-xs font-bold text-emerald-600">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                                {{ reserva.fecha|date:'d/m/Y' }}
+                            </span>
+                            <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-900/60 px-3 py-1 text-xs font-bold text-emerald-600">
+                                <span class="h-2 w-2 animate-pulse rounded-full bg-emerald-600"></span>
+                                Confirmada
+                            </span>
+                        </div>
+
+                        <!-- Título principal : tipo de cancha + hora grande -->
+                        <div class="mt-5 flex items-center justify-between gap-4">
+                            <div>
+                                <h3 class="font-display text-2xl font-bold text-white">{{ reserva.cancha.nombre }}</h3>
+                                <p class="mt-1 text-sm font-bold text-emerald-600">
+                                    {{ reserva.cancha.get_formato_juego_display }}
+                                    <span class="mx-1 text-slate-500">•</span>
+                                    <span class="font-semibold text-slate-500">{{ reserva.get_estado_display }}</span>
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-2 rounded-xl bg-white px-4 py-2.5">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-emerald-600" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                <span class="font-display text-3xl font-extrabold tracking-tight text-white">{{ reserva.hora_inicio|time:'H:i' }}</span>
+                            </div>
+                        </div>
+<!-- Caja de pago : seña + saldo pendiente -->
+                        <div class="mt-6 grid grid-cols-2 gap-3">
+                            <div class="rounded-xl bg-emerald-900/40 p-4 ring-1 ring-inset ring-emerald-300/20">
+                                <p class="text-xs font-bold uppercase tracking-wider text-emerald-600/80">Seña Pagada</p>
+                                <p class="mt-1 font-display text-2xl font-bold text-emerald-600">${{ reserva.calcular_sena|floatformat:0 }}</p>
+                            </div>
+                            <div class="rounded-xl bg-amber-400/10 p-4 ring-1 ring-inset ring-amber-400/20">
+                                <p class="text-xs font-bold uppercase tracking-wider text-amber-300/80">Saldo Pendiente en Cancha</p>
+                                <p class="mt-1 font-display text-2xl font-bold text-amber-300">${{ reserva.calcular_saldo|floatformat:0 }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Botón principal -->
+                        <a href="https://wa.me/?text=%C2%A1Turno%20confirmado!%20%E2%9A%BD%20Cancha:%20{{ reserva.cancha.nombre|urlencode }}%20%7C%20Fecha:%20{{ reserva.fecha|date:'d/m/Y' }}%20{{ reserva.hora_inicio|time:'H:i' }}%20%7C%20Saldo:%20%24{{ reserva.calcular_saldo|floatformat:0 }}"
+                           target="_blank" rel="noopener"
+                           class="mt-6 flex items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700">
+                            <svg viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5" aria-hidden="true"><path d="M20.52 3.48A11.86 11.86 0 0 0 12.08 0C5.52 0 .18 5.34.18 11.9c0 2.1.55 4.15 1.6 5.96L.08 24l6.28-1.65a11.88 11.88 0 0 0 5.72 1.46h.01c6.55 0 11.9-5.34 11.9-11.9 0-3.18-1.24-6.17-3.47-8.43Zm-8.44 18.29h-.01a9.86 9.86 0 0 1-5.03-1.38l-.36-.21-3.73.98 1-3.64-.23-.37a9.86 9.86 0 0 1-1.51-5.25c0-5.44 4.43-9.86 9.87-9.86a9.8 9.8 0 0 1 6.98 2.9 9.82 9.82 0 0 1 2.89 6.99c0 5.44-4.43 9.86-9.87 9.86Zm5.41-7.39c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.64-2.05-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.22 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.27.5 1.7.64.72.23 1.38.2 1.9.12.58-.09 1.76-.72 2.01-1.41.25-.69.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35Z"/></svg>
+                            Ver Comprobante / Enviar a WhatsApp
+                        </a>
+                    </article>
+                    {% empty %}
+                    <p class="col-span-full rounded-2xl border border-dashed border-emerald-900/50 bg-emerald-950/40 p-8 text-center text-sm text-slate-500">
+                        No tenés próximos partidos confirmados. ¡Reservá tu turno! 🏟️
+                    </p>
+                    {% endfor %}
+                </div>
+            </section>
+<!-- PARTIDOS PASADOS · Marcador Deportivo de TV -->
+            <section class="mt-16">
+                <h2 class="font-display text-3xl font-bold tracking-tight">Partidos Pasados</h2>
+                <div class="mt-6 space-y-6">
+                    {% for reserva, resultado in partidos %}
+                    <article class="overflow-hidden rounded-2xl border border-emerald-900/50 bg-emerald-950 text-white shadow-lg transition-all hover:border-emerald-400">
+                        <!-- Cabecera del marcador -->
+                        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-emerald-900/50 bg-emerald-900/60 px-6 py-3.5">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                {{ reserva.fecha|date:'d/m/Y' }} · {{ reserva.cancha.nombre }}
+                            </span>
+                            <span class="rounded-full bg-emerald-900/60 px-3 py-1 text-[11px] font-bold text-slate-600">
+                                {{ reserva.cancha.get_formato_juego_display }} · Finalizado
+                            </span>
+                        </div>
+
+                        <!-- Marcador gigante de TV -->
+                        <div class="px-6 pb-4 pt-8">
+                            <div class="flex flex-col items-center justify-center gap-5 text-center sm:flex-row sm:gap-6">
+                                <div class="flex-1">
+                                    <span class="font-display text-lg font-bold text-slate-600">{{ resultado.equipo_a }}</span>
+                                </div>
+                                <div class="flex items-stretch gap-2">
+                                    <span class="flex w-16 items-center justify-center rounded-xl bg-white px-3 py-2 ring-1 ring-inset ring-emerald-900/50">
+                                        <b class="{% if resultado.goles_a > resultado.goles_b %}text-emerald-600{% else %}text-white{% endif %} font-display text-4xl font-extrabold">{{ resultado.goles_a }}</b>
+                                    </span>
+                                    <span class="flex items-center font-display text-3xl font-extrabold text-slate-500">–</span>
+                                    <span class="flex w-16 items-center justify-center rounded-xl bg-white px-3 py-2 ring-1 ring-inset ring-emerald-900/50">
+                                        <b class="{% if resultado.goles_b > resultado.goles_a %}text-emerald-600{% else %}text-white{% endif %} font-display text-4xl font-extrabold">{{ resultado.goles_b }}</b>
+                                    </span>
+                                </div>
+                                <div class="flex-1">
+                                    <span class="font-display text-lg font-bold text-slate-600">{{ resultado.equipo_b }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MVP -->
+                        {% if resultado.mvp_partido %}
+                        <div class="px-6 pb-2 text-center">
+                            <span class="inline-flex items-center gap-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-1 font-semibold text-amber-400">
+                                ⭐ MVP: {{ resultado.mvp_partido }}
+                            </span>
+                        </div>
+                        {% endif %}
+<!-- Notas (pizarra) + fotos -->
+                        <div class="px-6 pb-6 pt-4">
+                            <div class="rounded-2xl bg-white/70 p-5 ring-1 ring-inset ring-emerald-900/50" style="background-image:radial-gradient(circle at 1px 1px, rgba(148,163,184,.08) 1px, transparent 0); background-size:18px 18px;">
+                                <div class="flex items-center justify-between gap-3">
+                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Notas del encuentro</p>
+                                    <!-- Formulario para subir foto -->
+                                    <form method="post" enctype="multipart/form-data" action="{% url 'reservas:subir_foto_partido' reserva.id %}" class="flex flex-wrap items-center justify-end gap-2">
+                                        {% csrf_token %}
+                                        <label class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-emerald-900/60 px-3 py-2 text-xs font-bold text-slate-600 transition hover:border-emerald-600 hover:text-emerald-600">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                                            Subir Foto
+                                            <input type="file" name="imagen" accept="image/*" required class="sr-only">
+                                        </label>
+                                        <button type="submit" class="rounded-xl bg-emerald-900/60 px-3 py-2 text-xs font-bold text-slate-600 transition hover:bg-emerald-600 hover:text-emerald-700">Guardar</button>
+                                    </form>
+                                </div>
+
+                                {% if resultado.notas %}
+                                    <p class="mt-3 text-sm italic leading-relaxed text-slate-500">“{{ resultado.notas }}”</p>
+                                {% else %}
+                                    <p class="mt-3 text-sm italic text-slate-500">Sin comentarios registrados.</p>
+                                {% endif %}
+                            </div>
+
+                            <!-- Galería de fotos del partido -->
+                            {% if resultado.fotos.all %}
+                            <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                                {% for foto in resultado.fotos.all %}
+                                <a href="{{ foto.imagen.url }}" target="_blank" rel="noopener" class="group relative block overflow-hidden rounded-xl border border-emerald-900/50">
+                                    <img src="{{ foto.imagen.url }}" alt="Foto del partido" loading="lazy" class="h-24 w-full object-cover transition duration-300 group-hover:scale-110">
+                                </a>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </article>
+                    {% empty %}
+                    <p class="rounded-2xl border border-dashed border-emerald-900/50 bg-emerald-950/40 p-8 text-center text-sm text-slate-500">
+                        Todavía no registraste partidos jugados. ¡Al terminar el encuentro cargá el resultado! 🏁
+                    </p>
+                    {% endfor %}
+                </div>
+            </section>
+<!-- CARGAR RESULTADO (partidos terminados sin resultado) -->
+            {% if pendientes %}
+            <section class="mt-16">
+                <h2 class="font-display text-2xl font-bold tracking-tight">Cargar Resultado</h2>
+                <div class="mt-5 grid gap-6 lg:grid-cols-2">
+                    {% for reserva in pendientes %}
+                    <form method="post" class="rounded-2xl border border-emerald-900/50 bg-emerald-950 text-white p-6 shadow-lg transition-all hover:border-emerald-400">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="guardar_resultado">
+                        <input type="hidden" name="reserva_id" value="{{ reserva.id }}">
+                        <input type="hidden" name="identificador" value="{{ identificador }}">
+                        <div class="flex items-center justify-between gap-2">
+                            <p class="font-display text-xl font-bold text-white">{{ reserva.cancha.nombre }}</p>
+                            <span class="rounded-lg bg-emerald-900/60 px-3 py-1 text-xs font-bold text-slate-500">{{ reserva.fecha|date:'d/m/Y' }}</span>
+                        </div>
+                        <div class="mt-5 grid grid-cols-2 gap-3">
+                            <input name="equipo_a" placeholder="Equipo local" required class="rounded-xl border border-emerald-900/50 bg-white p-3 text-sm text-slate-600 placeholder:text-slate-500">
+                            <input name="equipo_b" placeholder="Equipo visitante" required class="rounded-xl border border-emerald-900/50 bg-white p-3 text-sm text-slate-600 placeholder:text-slate-500">
+                            <input name="goles_a" type="number" min="0" placeholder="Goles local" required class="rounded-xl border border-emerald-900/50 bg-white p-3 text-sm text-slate-600 placeholder:text-slate-500">
+                            <input name="goles_b" type="number" min="0" placeholder="Goles visitante" required class="rounded-xl border border-emerald-900/50 bg-white p-3 text-sm text-slate-600 placeholder:text-slate-500">
+                            <input name="mvp_partido" placeholder="MVP (opcional)" class="col-span-2 rounded-xl border border-emerald-900/50 bg-white p-3 text-sm text-slate-600 placeholder:text-slate-500">
+                            <textarea name="notas" rows="2" placeholder="Notas" class="col-span-2 rounded-xl border border-emerald-900/50 bg-white p-3 text-sm text-slate-600 placeholder:text-slate-500"></textarea>
+                        </div>
+                        <button type="submit" class="mt-5 w-full rounded-xl bg-emerald-600 py-3 font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700">
+                            Cargar Resultado
+                        </button>
+                    </form>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+<!-- RESERVAS CANCELADAS -->
+            {% if canceladas %}
+            <details class="mt-16 overflow-hidden rounded-2xl border border-emerald-900/50 bg-emerald-950 text-white">
+                <summary class="cursor-pointer list-none px-6 py-4 font-display text-xl font-bold text-white transition hover:text-emerald-600">
+                    Reservas Canceladas ({{ canceladas|length }})
+                </summary>
+                <div class="border-t border-emerald-900/50">
+                    {% for reserva in canceladas %}
+                    <p class="flex items-center justify-between gap-3 border-b border-emerald-900/50 px-6 py-3 text-sm text-slate-500">
+                        <span>{{ reserva.cancha.nombre }} · {{ reserva.fecha|date:'d/m/Y' }} {{ reserva.hora_inicio|time:'H:i' }}</span>
+                        <span class="inline-flex items-center gap-1 text-rose-400">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+                            Cancelada
+                        </span>
+                    </p>
+                    {% endfor %}
+                </div>
+            </details>
+            {% endif %}
+        {% endif %}
+    </main>
+</div>
+
+<style>
+    input[type="text"], input[type="number"], input[type="date"], textarea, select {
+        width: 100%;
+        border-radius: .75rem;
+    }
+    input:focus, textarea:focus, select:focus {
+        outline: 2px solid #10b981;
+        outline-offset: 2px;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'reservas/base.html' %}
+{% block title %}Reserva confirmada | CanchaYa{% endblock %}
+{% block content %}
+<section class="mx-auto max-w-3xl px-5 py-20 text-center text-slate-900 lg:py-28">
+    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-600 text-2xl font-black text-white">✓</div>
+    <p class="mt-8 text-sm font-bold uppercase tracking-[0.2em] text-emerald-600">Reserva pendiente</p>
+    <h1 class="mt-3 font-display text-5xl font-bold leading-none tracking-tight">Completa la seña.</h1>
+    <div class="mt-10 rounded-2xl border border-emerald-900/50 bg-emerald-950 text-white p-7 text-left shadow-lg">
+        <div class="flex justify-between border-b border-emerald-900/50 pb-4"><span class="text-slate-500">Cancha</span><strong>{{ reserva.cancha.nombre }}</strong></div>
+        <div class="flex justify-between border-b border-emerald-900/50 py-4"><span class="text-slate-500">Fecha</span><strong>{{ reserva.fecha|date:'d/m/Y' }}</strong></div>
+        <div class="flex justify-between border-b border-emerald-900/50 py-4"><span class="text-slate-500">Hora</span><strong>{{ reserva.hora_inicio|time:'H:i' }}</strong></div>
+        <div class="flex justify-between pt-4"><span class="text-slate-500">Seña (50%)</span><strong class="text-emerald-600 font-black">${{ sena|floatformat:0 }}</strong></div>
+    </div>
+    <a href="{{ payment_url }}" class="mt-8 inline-block rounded-xl bg-emerald-600 px-7 py-4 font-extrabold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700">Pagar seña</a>
+    <p class="mt-4 text-sm text-slate-500">{% if simulacion %}Modo local: el pago se simulará al continuar.{% else %}La reserva se confirmará automáticamente después de validar el pago.{% endif %}</p>
+    <div class="mt-10 rounded-3xl border border-emerald-900/50 bg-emerald-950 text-white p-6 text-left shadow-lg sm:p-8 text-white" data-calculadora data-total="{{ reserva.cancha.precio_por_hora|floatformat:2 }}" data-pagado="{{ sena|floatformat:2 }}">
+        <div class="flex flex-col justify-between gap-3 sm:flex-row sm:items-center"><div><p class="text-xs font-bold uppercase tracking-[0.18em] text-emerald-600">Herramientas de grupo</p><h2 class="mt-1 font-display text-2xl font-bold">Divide el turno</h2></div><div class="flex gap-2"><button type="button" data-jugadores="10" class="jugadores-btn rounded-xl bg-emerald-600 px-4 py-2 text-sm font-extrabold text-white">10 jugadores</button><button type="button" data-jugadores="12" class="jugadores-btn rounded-xl border border-emerald-900/60 px-4 py-2 text-sm font-bold text-slate-500">12 jugadores</button></div></div>
+        <div class="mt-6 grid gap-3 sm:grid-cols-2"><div class="rounded-2xl bg-white p-4 text-slate-900"><p class="text-xs font-semibold text-slate-500">Seña por persona</p><p data-sena-persona class="mt-1 font-display text-2xl font-black text-emerald-600"></p></div><div class="rounded-2xl bg-white p-4 text-slate-900"><p class="text-xs font-semibold text-slate-500">Saldo restante por persona</p><p data-saldo-persona class="mt-1 font-display text-2xl font-black text-emerald-600"></p></div></div>
+        <a data-whatsapp href="#" target="_blank" rel="noopener" class="mt-5 inline-flex w-full items-center justify-center rounded-2xl bg-emerald-600 px-5 py-3.5 font-extrabold text-white transition hover:bg-emerald-700">Compartir Reserva por WhatsApp <span class="ml-2">↗</span></a>
+    </div>
+</section>
+<script>
+    (function () { const box = document.querySelector('[data-calculadora]'); if (!box) return; const total = Number(box.dataset.total), pagado = Number(box.dataset.pagado), saldo = total - pagado, reserva = { cancha: '{{ reserva.cancha.nombre|escapejs }}', fecha: '{{ reserva.fecha|date:"d/m/Y" }}', hora: '{{ reserva.hora_inicio|time:"H:i" }}' }; let jugadores = 10; const money = value => '$' + value.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }); function actualizar() { box.querySelector('[data-sena-persona]').textContent = money(pagado / jugadores); box.querySelector('[data-saldo-persona]').textContent = money(saldo / jugadores); box.querySelectorAll('.jugadores-btn').forEach(btn => { btn.classList.toggle('bg-emerald-600', Number(btn.dataset.jugadores) === jugadores); btn.classList.toggle('font-extrabold', Number(btn.dataset.jugadores) === jugadores); btn.classList.toggle('text-white', Number(btn.dataset.jugadores) === jugadores); }); const mensaje = `¡Turno confirmado! ⚽ Cancha: ${reserva.cancha} | Fecha: ${reserva.fecha} ${reserva.hora} | Saldo pendiente por persona: ${money(saldo / jugadores)}`; box.querySelector('[data-whatsapp]').href = 'https://wa.me/?text=' + encodeURIComponent(mensaje); } box.querySelectorAll('[data-jugadores]').forEach(btn => btn.addEventListener('click', () => { jugadores = Number(btn.dataset.jugadores); actualizar(); })); actualizar(); })();
+</script>
+{% endblock %}
