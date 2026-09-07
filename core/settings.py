@@ -133,3 +133,5 @@ MERCADOPAGO_ACCESS_TOKEN = os.getenv('MERCADOPAGO_ACCESS_TOKEN', '')
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'reservas@canchaya.local')
+
+CSRF_TRUSTED_ORIGINS = ['https://canchasya-ylqk.onrender.com']
