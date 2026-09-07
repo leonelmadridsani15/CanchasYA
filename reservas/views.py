@@ -135,7 +135,7 @@ def _enlace_pago(request, reserva, cancha, sena):
 def listar_canchas(request):
 	if request.user.is_authenticated and request.user.is_staff:
 		return redirect('reservas:dashboard')
-	canchas = Cancha.objects.filter(activa=True).prefetch_related('resenas').order_by('nombre')
+	canchas = Cancha.objects.filter(activa=True).prefetch_related('resenas').order_by('id')
 	return render(request, 'reservas/canchas.html', {'canchas': canchas})
 
 
