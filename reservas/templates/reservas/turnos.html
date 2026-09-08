@@ -1,9 +1,0 @@
-{% for hora, ocupada in horas %}
-    {% if ocupada %}
-        <button type="button" disabled class="cursor-not-allowed rounded-2xl border border-slate-200 bg-white text-slate-900 px-3 py-4 text-sm font-bold text-slate-500" aria-label="{{ hora|time:'H:i' }} ocupado">{{ hora|time:'H:i' }}<span class="mt-1 block text-xs font-medium text-slate-400">Ocupado</span></button>
-    {% else %}
-        <button type="button" data-turno data-hora="{{ hora|time:'H:i' }}" aria-pressed="false" onclick="seleccionarTurno(this)" class="rounded-2xl border border-slate-200 bg-emerald-950 text-white px-3 py-4 text-sm font-bold text-emerald-200 transition hover:border-emerald-600 hover:bg-emerald-900/40"><span class="mr-1 inline-block h-2 w-2 animate-pulse rounded-full bg-emerald-600"></span>{{ hora|time:'H:i' }}<span class="mt-1 block text-xs font-medium text-emerald-300">Disponible</span></button>
-    {% endif %}
-{% empty %}
-    <p class="col-span-full rounded-2xl border border-slate-200 bg-white text-slate-900 p-5 text-sm text-slate-500">No hay turnos para esta fecha.</p>
-{% endfor %}
