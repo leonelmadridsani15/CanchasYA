@@ -11,3 +11,11 @@ __pycache__/
 # Configuración del editor
 .vscode/
 .idea/
+
+# Variables de entorno (contienen credenciales, no subir nunca)
+.env
+
+# Archivos estáticos compilados / media generados en build
+staticfiles/
+media/
+db.sqlite3

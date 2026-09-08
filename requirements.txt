@@ -1,3 +1,7 @@
 Django
 mercadopago==3.5.0
 Pillow
+psycopg[binary]
+python-dotenv
+whitenoise
+django-storages[boto3]

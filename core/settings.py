@@ -12,21 +12,28 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 
 import os
 from pathlib import Path
+from urllib.parse import unquote, urlparse
+
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Cargar variables de entorno desde .env (solo desarrollo local).
+load_dotenv(BASE_DIR / '.env')
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-cur9l5vcd+-xyh!jbb2=hm+xp6&8@#dm&wi6z)3fjphrl)(3+d'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-cur9l5vcd+-xyh!jbb2=hm+xp6&8@#dm&wi6z)3fjphrl)(3+d')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG: en producción (Vercel) pon DJANGO_DEBUG=False en las variables de entorno.
+DEBUG = os.getenv('DJANGO_DEBUG', 'True').lower() in ('1', 'true', 'yes')
 
-ALLOWED_HOSTS = ['canchasya-ylqk.onrender.com', 'localhost', '127.0.0.1']
+# Hosts permitidos. Acepta cualquier host.
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,11 +45,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',
     'reservas',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -75,11 +84,31 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+def _database_from_url(db_url):
+    """Convierte la connection string de Supabase/PostgreSQL a la config de Django.
+
+    Atención: urlparse NO decodifica usuario/contraseña, por eso se aplica
+    unquote() (Supabase entrega la URI ya URL-encoded).
+    """
+    url = urlparse(db_url)
+    return {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': url.path[1:],
+        'USER': unquote(url.username or ''),
+        'PASSWORD': unquote(url.password or ''),
+        'HOST': url.hostname,
+        'PORT': url.port or 5432,
+        # Supabase exige conexión cifrada (SSL).
+        'OPTIONS': {'sslmode': os.getenv('DB_SSLMODE', 'require')},
     }
+
+
+# Supabase entrega la connection string en:
+#   Dashboard de Supabase -> Project Settings -> Database -> Connection string -> URI
+# Ejemplo (conexión directa, puerto 5432):
+#   postgresql://postgres.REFERENCIA:PASSWORD@db.REFERENCIA.supabase.co:5432/postgres
+DATABASES = {
+    'default': _database_from_url(os.getenv('DATABASE_URL', '')),
 }
 
 
@@ -118,8 +147,53 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+# WhiteNoise sirve los estáticos dentro del WSGI (necesario en serverless).
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+WHITENOISE_AUTOREFRESH = DEBUG
+
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR / 'media'  # Solo se usa en local (DEBUG); en prod se usa Supabase Storage.
+
+# ============================================================
+#  SUPABASE STORAGE (back-end de archivos MEDIA)
+#  Usa la API S3 de Supabase a través de django-storages.
+#  Requiere crear un bucket público en el dashboard de Supabase.
+# ============================================================
+SUPABASE_URL = os.getenv('SUPABASE_URL', 'https://TU_PROJECT_REF.supabase.co')
+# Endpoint S3 de Supabase Storage (anexa storage/v1/s3 a la URL del proyecto).
+AWS_S3_ENDPOINT_URL = os.getenv('AWS_S3_ENDPOINT_URL', f'{SUPABASE_URL}/storage/v1/s3')
+# Claves API de Supabase. Se aceptan tanto el formato nuevo (sb_publishable_ /
+# sb_secret_) como el clásico (anon / service_role).
+AWS_ACCESS_KEY_ID = (
+    os.getenv('SUPABASE_PUBLISHABLE_KEY')
+    or os.getenv('SUPABASE_ANON_KEY')
+    or ''
+)
+AWS_SECRET_ACCESS_KEY = (
+    os.getenv('SUPABASE_SECRET_KEY')
+    or os.getenv('SUPABASE_SERVICE_ROLE_KEY')
+    or ''
+)
+AWS_STORAGE_BUCKET_NAME = os.getenv('SUPABASE_STORAGE_BUCKET', 'canchasya-media')
+AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'us-east-1')
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+AWS_DEFAULT_ACL = 'public-read'
+AWS_QUERYSTRING_AUTH = False  # URLs públicas sin token
+AWS_S3_FILE_OVERWRITE = False
+AWS_S3_ADDRESSING_STYLE = 'path'
+
+STORAGES = {
+    'default': {
+        # Usamos S3 backend para todos los archivos almacenados en el modelo
+        # (fotos de partidos en SUPABASE STORAGE). Los estáticos siguen con WhiteNoise.
+        'BACKEND': 'storages.backends.s3.S3Storage',
+        'OPTIONS': {},
+    },
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    },
+}
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
@@ -134,4 +208,8 @@ MERCADOPAGO_ACCESS_TOKEN = os.getenv('MERCADOPAGO_ACCESS_TOKEN', '')
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'reservas@canchaya.local')
 
-CSRF_TRUSTED_ORIGINS = ['https://canchasya-ylqk.onrender.com']
+CSRF_TRUSTED_ORIGINS = [
+    o.strip()
+    for o in os.getenv('CSRF_TRUSTED_ORIGINS', 'https://*.vercel.app').split(',')
+    if o.strip()
+]
