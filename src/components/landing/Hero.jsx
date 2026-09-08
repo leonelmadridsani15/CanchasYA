@@ -27,7 +27,7 @@ export default function Hero() {
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-lime-400/40 bg-lime-400/10 px-4 py-1.5 backdrop-blur-sm">
             <span className="h-2 w-2 animate-pulse rounded-full bg-lime-400"></span>
             <span className="text-[10px] font-black uppercase tracking-[0.18em] text-lime-300 sm:text-[11px]">
-              Agenda abierta · Turnos hoy
+              Agenda abierta · Turnos disponibles hoy
             </span>
           </div>
 
@@ -35,14 +35,13 @@ export default function Hero() {
           <h1 className="font-display text-4xl font-black leading-[0.98] tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
             Tú pones los cracks,
             <span className="mt-2 block">
-              nosotros la <span className="text-lime-400"> cancha.</span>
+              nosotros la <span className="text-lime-400">cancha.</span>
             </span>
           </h1>
 
           {/* DESCRIPCIÓN */}
           <p className="mt-6 max-w-xl text-sm leading-6 text-slate-200 sm:text-base lg:text-lg">
-            Encuentra tu cancha, reúne a tu equipo y disfruta del partido. Reserva de forma sencilla y vive la
-            experiencia CanchaYa.
+            Encuentra la cancha ideal para tu equipo, elige el horario que más te acomode y reserva en pocos pasos.
           </p>
 
           {/* BOTÓN */}

@@ -10,6 +10,10 @@ import PagoResultado from './pages/PagoResultado'
 import MisReservas from './pages/MisReservas'
 import Historial from './pages/Historial'
 
+// 1. IMPORTAR LAS NUEVAS PÁGINAS
+import Terminos from './pages/Terminos'
+import Privacidad from './pages/Privacidad'
+
 function RutaProtegida({ children }) {
   const { user, loading } = useAuth()
   if (loading) return null
@@ -26,6 +30,11 @@ export default function App() {
           <Route path="/registro" element={<Registro />} />
           <Route path="/mis-reservas" element={<MisReservas />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          
+          {/* 2. DECLARAR LAS RUTAS AQUÍ */}
+          <Route path="/terminos" element={<Terminos />} />
+          <Route path="/privacidad" element={<Privacidad />} />
+
           <Route
             path="/reservar/:canchaId"
             element={
@@ -58,6 +67,8 @@ export default function App() {
               </RutaProtegida>
             }
           />
+          
+          {/* Esta ruta redirige todo lo desconocido a "/" */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

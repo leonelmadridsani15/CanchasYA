@@ -26,31 +26,32 @@ export default function CanchasSection() {
   }, [])
 
   return (
-    <section id="canchas" className="relative overflow-hidden bg-[#faf6f0] py-20 lg:py-24">
-      <div className="pointer-events-none absolute -left-32 top-20 h-72 w-72 rounded-full bg-emerald-500/10 blur-3xl"></div>
-      <div className="pointer-events-none absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-amber-500/10 blur-3xl"></div>
+    <section id="canchas" className="relative overflow-hidden bg-[#FAF9F6] py-20 lg:py-24">
+      {/* DIFUMINACIONES VERDE CLARITO */}
+      <div className="pointer-events-none absolute -left-32 top-20 h-80 w-80 rounded-full bg-emerald-400/15 blur-3xl"></div>
+      <div className="pointer-events-none absolute -right-32 bottom-10 h-80 w-80 rounded-full bg-emerald-500/10 blur-3xl"></div>
 
       <div className="relative mx-auto max-w-[1280px] px-4 lg:px-8">
         {/* ENCABEZADO */}
         <div className="mb-12 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <span className="text-xs font-black uppercase tracking-[0.25em] text-emerald-800">Elige tu cancha</span>
-            <h2 className="mt-3 font-display text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">
+            <span className="text-xs font-black uppercase tracking-[0.25em] text-[#166534]">Elige tu cancha</span>
+            <h2 className="mt-3 font-display text-4xl font-black tracking-tight text-[#071426] sm:text-5xl">
               Canchas disponibles
             </h2>
             <p className="mt-4 max-w-xl text-sm leading-6 text-slate-600 sm:text-base">
               Encuentra el espacio perfecto para tu equipo y reserva tu próximo partido.
             </p>
           </div>
-          <div className="w-fit rounded-full border border-stone-300 bg-stone-200/60 px-4 py-2 backdrop-blur-sm">
-            <span className="text-xs font-bold text-slate-800">{canchas.length} canchas disponibles</span>
+          <div className="w-fit rounded-full border border-emerald-900/10 bg-white/80 px-4 py-2 shadow-sm backdrop-blur-sm">
+            <span className="text-xs font-bold text-[#071426]">{canchas.length} canchas disponibles</span>
           </div>
         </div>
 
         {/* TARJETAS */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {cargando ? (
-            <div className="col-span-full rounded-3xl border border-dashed border-stone-300 bg-stone-200/50 p-16 text-center">
+            <div className="col-span-full rounded-3xl border border-dashed border-slate-300 bg-white/50 p-16 text-center">
               <p className="text-sm font-bold text-slate-500">Cargando canchas…</p>
             </div>
           ) : error ? (
@@ -59,11 +60,11 @@ export default function CanchasSection() {
               <p className="mt-2 text-sm text-rose-700">{error}</p>
             </div>
           ) : canchas.length === 0 ? (
-            <div className="col-span-full rounded-3xl border border-dashed border-stone-300 bg-stone-200/50 p-16 text-center">
+            <div className="col-span-full rounded-3xl border border-dashed border-slate-300 bg-white/50 p-16 text-center">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-800/10 text-3xl">
                 ⚽
               </div>
-              <h3 className="mt-5 text-xl font-black text-slate-900">No hay canchas disponibles</h3>
+              <h3 className="mt-5 text-xl font-black text-[#071426]">No hay canchas disponibles</h3>
               <p className="mx-auto mt-2 max-w-md text-sm text-slate-600">
                 En este momento no tenemos canchas disponibles para mostrar.
               </p>
