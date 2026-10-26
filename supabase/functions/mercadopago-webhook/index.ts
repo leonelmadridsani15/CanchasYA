@@ -1,6 +1,3 @@
-// Supabase Edge Function: mercadopago-webhook
-// Verifica el pago con la API de Mercado Pago y confirma la reserva.
-// Desplegar: supabase functions deploy mercadopago-webhook --no-verify-jwt
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const supabase = createClient(
@@ -12,7 +9,7 @@ async function verificarPago(paymentId: string) {
   const token = Deno.env.get('MERCADOPAGO_ACCESS_TOKEN')
   if (!token) return {}
   const res = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${token.trim()}` },
   })
   if (!res.ok) return {}
   return res.json()
