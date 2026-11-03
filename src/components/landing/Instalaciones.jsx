@@ -5,16 +5,10 @@ import { IMAGENES_CANCHA } from '../../lib/constants'
 function Carrusel({ nombre, imagenes, etiqueta, titulo, grande = false }) {
   const [indice, setIndice] = useState(0)
 
-  const mover = (direccion) => {
-    setIndice((actual) => (actual + direccion + imagenes.length) % imagenes.length)
-  }
-
   useEffect(() => {
     const timer = setInterval(() => setIndice((a) => (a + 1) % imagenes.length), 4000)
     return () => clearInterval(timer)
   }, [imagenes.length])
-
-  const posicionBotones = grande ? 'left-4 right-4 p-3' : 'left-3 right-3 p-2 text-xs'
 
   return (
     <div
@@ -66,26 +60,6 @@ function Carrusel({ nombre, imagenes, etiqueta, titulo, grande = false }) {
         </span>
       )}
 
-      {/* Botones de Navegación */}
-      <button
-        onClick={() => mover(-1)}
-        aria-label="Anterior"
-        className={`absolute ${posicionBotones.split(' ')[0]} top-1/2 -translate-y-1/2 rounded-full bg-black/50 ${
-          posicionBotones.split(' ')[2]
-        } text-white backdrop-blur-md transition hover:bg-lime-400 hover:text-black`}
-      >
-        ❮
-      </button>
-
-      <button
-        onClick={() => mover(1)}
-        aria-label="Siguiente"
-        className={`absolute ${posicionBotones.split(' ')[1]} top-1/2 -translate-y-1/2 rounded-full bg-black/50 ${
-          posicionBotones.split(' ')[2]
-        } text-white backdrop-blur-md transition hover:bg-lime-400 hover:text-black`}
-      >
-        ❯
-      </button>
     </div>
   )
 }
@@ -147,7 +121,7 @@ export default function Instalaciones() {
           <Carrusel
             nombre="canchas"
             grande
-            etiqueta="Canchas y Campos"
+            etiqueta="Canchas"
             titulo="Pasto Sintético e Iluminación LED"
             imagenes={IMAGENES_CANCHA}
           />
