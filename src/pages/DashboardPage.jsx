@@ -79,7 +79,7 @@ export default function DashboardPage() {
     )
   })
 
-  async function notificarReserva(reserva, tipo, nuevaFecha = reserva.fecha, nuevaHora = reserva.hora_inicio) {
+  function notificarReserva(reserva, tipo, nuevaFecha = reserva.fecha, nuevaHora = reserva.hora_inicio) {
     const fecha = fechaCorta(nuevaFecha)
     const hora = nuevaHora.slice(0, 5)
     const mensaje = tipo === 'cancelada'
@@ -91,17 +91,6 @@ export default function DashboardPage() {
       window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(mensaje)}`, '_blank', 'noopener,noreferrer')
     }
 
-    if (reserva.email_contacto) {
-      const { error: emailError } = await supabase.functions.invoke('notify-reservation', {
-        body: {
-          email: reserva.email_contacto,
-          nombre: reserva.nombre_contacto || 'Cliente',
-          asunto: tipo === 'cancelada' ? 'Reserva cancelada - CanchaYa' : 'Reserva reprogramada - CanchaYa',
-          mensaje,
-        },
-      })
-      if (emailError) throw new Error(`La reserva se actualizó, pero no se pudo enviar el correo: ${emailError.message}`)
-    }
   }
 
   async function accion(reserva, action) {
@@ -112,7 +101,7 @@ export default function DashboardPage() {
     } else {
       try {
         if (action === 'cancelar') await notificarReserva(reserva, 'cancelada')
-        setMensaje({ tipo: 'ok', texto: action === 'cancelar' ? 'Reserva cancelada y notificaciones enviadas.' : 'Reserva bloqueada.' })
+        setMensaje({ tipo: 'ok', texto: action === 'cancelar' ? 'Reserva cancelada y aviso preparado para WhatsApp.' : 'Reserva bloqueada.' })
       } catch (notificationError) {
         setMensaje({ tipo: 'error', texto: notificationError.message })
       }
@@ -299,7 +288,7 @@ export default function DashboardPage() {
               } else {
                 try {
                   await notificarReserva(modalReprogramar, 'reprogramada', datos.nueva_fecha, datos.nueva_hora)
-                  setMensaje({ tipo: 'ok', texto: `Reserva movida al ${fechaCorta(datos.nueva_fecha)} a las ${datos.nueva_hora}. Notificaciones enviadas.` })
+                  setMensaje({ tipo: 'ok', texto: `Reserva movida al ${fechaCorta(datos.nueva_fecha)} a las ${datos.nueva_hora}. Aviso preparado para WhatsApp.` })
                 } catch (notificationError) {
                   setMensaje({ tipo: 'error', texto: notificationError.message })
                 }
