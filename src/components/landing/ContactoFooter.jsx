@@ -1,5 +1,6 @@
 import { whatsappLink, WHATSAPP_COMMUNITY_URL } from '../../lib/constants'
 import BrandLogo from '../BrandLogo'
+import { Link } from 'react-router-dom'
 
 export default function ContactoFooter() {
   return (
@@ -137,12 +138,12 @@ export default function ContactoFooter() {
                 <a href="#contacto" className="block transition hover:text-[#16A34A]">
                   Contacto
                 </a>
-                <a href="/terminos" className="block transition hover:text-[#16A34A]">
+                <Link to="/terminos" className="block transition hover:text-[#16A34A]">
                   Términos y condiciones
-                </a>
-                <a href="/privacidad" className="block transition hover:text-[#16A34A]">
+                </Link>
+                <Link to="/privacidad" className="block transition hover:text-[#16A34A]">
                   Política de privacidad
-                </a>
+                </Link>
               </div>
             </div>
           </div>
