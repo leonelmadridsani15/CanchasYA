@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { money } from '../../lib/constants'
+import { money, whatsappLink } from '../../lib/constants'
 
 /**
  * Calculadora "Divide el turno": seña y saldo por persona + compartir por WhatsApp.
@@ -10,7 +10,7 @@ export default function DivideTurno({ total, pagado, reserva }) {
 
   const saldo = total - pagado
   const mensaje = `¡Turno confirmado! ⚽ Cancha: ${reserva.cancha} | Fecha: ${reserva.fecha} ${reserva.hora} | Saldo pendiente por persona: ${money(saldo / jugadores)}`
-  const whatsappHref = 'https://wa.me/?text=' + encodeURIComponent(mensaje)
+  const whatsappHref = whatsappLink(mensaje)
 
   const botonClases = (valor) =>
     [

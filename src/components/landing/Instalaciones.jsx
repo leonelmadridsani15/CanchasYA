@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from 'react'
+import { IMAGENES_CANCHA } from '../../lib/constants'
 
 function Carrusel({ nombre, imagenes, etiqueta, titulo, grande = false }) {
   const [indice, setIndice] = useState(0)
@@ -116,13 +117,13 @@ export default function Instalaciones() {
   return (
     <section
       id="instalaciones"
-      className="relative overflow-hidden bg-[#071426] py-20 text-white lg:py-28"
+      className="relative overflow-hidden bg-[#FAF9F6] px-4 py-4 text-white lg:px-8 lg:py-6"
     >
       {/* Luces verdes de fondo más luminosas */}
       <div className="pointer-events-none absolute top-1/3 -left-20 h-[600px] w-[600px] rounded-full bg-emerald-500/20 blur-[150px]" />
       <div className="pointer-events-none absolute bottom-0 -right-20 h-[600px] w-[600px] rounded-full bg-lime-400/20 blur-[150px]" />
 
-      <div className="relative mx-auto max-w-[1280px] px-4 lg:px-8">
+      <div className="relative mx-auto max-w-[1280px] rounded-[2rem] bg-[#123D28] p-6 shadow-2xl shadow-[#071426]/15 sm:p-10 lg:p-14">
         {/* Encabezado */}
         <div className="mb-14 grid gap-4 lg:grid-cols-2 lg:items-end">
           <div>
@@ -132,7 +133,7 @@ export default function Instalaciones() {
             </span>
 
             <h2 className="mt-4 font-display text-4xl font-black tracking-tight text-white sm:text-5xl">
-              Nuestras <span className="text-emerald-400">instalaciones</span>
+              Nuestras <span className="text-white">instalaciones</span>
             </h2>
           </div>
 
@@ -148,14 +149,7 @@ export default function Instalaciones() {
             grande
             etiqueta="Canchas y Campos"
             titulo="Pasto Sintético e Iluminación LED"
-            imagenes={[
-              '/img/canchas_1.jpg',
-              '/img/canchas_2.jpg',
-              '/img/canchas_3.jpg',
-              '/img/canchas_4.jpg',
-              '/img/canchas_5.jpg',
-              '/img/canchas_6.jpg',
-            ]}
+            imagenes={IMAGENES_CANCHA}
           />
 
           {/* COLUMNA DERECHA (5 columnas) */}

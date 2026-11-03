@@ -1,15 +1,14 @@
-import { whatsappLink } from '../../lib/constants'
+import { whatsappLink, WHATSAPP_COMMUNITY_URL } from '../../lib/constants'
+import BrandLogo from '../BrandLogo'
 
 export default function ContactoFooter() {
   return (
     <>
       {/* CONTACTO */}
-      <section
-        id="contacto"
-        className="border-t border-slate-200 bg-white py-16 text-[#071426] lg:py-20"
-      >
-        <div className="mx-auto max-w-[1280px] px-4 lg:px-8">
-          <div className="grid items-center gap-10 lg:grid-cols-2">
+      <section id="contacto" className="border-t border-emerald-100 bg-[#FAF9F6] px-4 py-6 text-[#071426] lg:px-8 lg:py-8">
+        <div className="mx-auto max-w-[1280px]">
+          <div className="rounded-[2rem] border border-emerald-100 bg-[#F3FBEF] p-6 shadow-xl shadow-[#071426]/10 sm:p-8 lg:p-10">
+            <div className="grid items-center gap-8 lg:grid-cols-[0.8fr_1.2fr]">
             <div>
               <span className="text-xs font-black uppercase tracking-[0.25em] text-[#16A34A]">
                 Estamos para ayudarte
@@ -30,64 +29,33 @@ export default function ContactoFooter() {
                 href={whatsappLink()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 transition hover:-translate-y-1 hover:bg-emerald-100"
+                className="group flex items-center gap-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-5 transition duration-300 hover:-translate-y-1 hover:border-emerald-400 hover:bg-emerald-100 hover:shadow-lg hover:shadow-emerald-900/10"
               >
-                <span className="text-2xl" aria-hidden="true">
-                  💬
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#16A34A] text-xl text-white" aria-hidden="true">💬</span>
+                <span>
+                  <span className="block text-base font-black text-[#071426]">WhatsApp</span>
+                  <span className="mt-1 block text-xs text-slate-600">Reservas y consultas</span>
                 </span>
-
-                <p className="mt-3 text-base font-black text-[#071426]">
-                  WhatsApp
-                </p>
-
-                <p className="mt-1 text-xs leading-5 text-slate-600">
-                  Consulta y reserva directamente con nosotros.
-                </p>
               </a>
 
-              <a
-                href="/login"
-                className="rounded-2xl border border-slate-200 bg-slate-50 p-5 transition hover:-translate-y-1 hover:bg-slate-100"
-              >
-                <span className="text-2xl" aria-hidden="true">
-                  👤
-                </span>
-
-                <p className="mt-3 text-base font-black text-[#071426]">
-                  Tu cuenta
-                </p>
-
-                <p className="mt-1 text-xs leading-5 text-slate-600">
-                  Inicia sesión para revisar tus reservas e historial.
-                </p>
-              </a>
-            </div>
-          </div>
-
-          {/* Correo */}
-          <div className="mt-10 border-t border-slate-200 pt-6">
-            <p className="text-sm text-slate-500">
-              ¿Prefieres escribirnos por correo?
               <a
                 href="mailto:leonelmadridsa@gmail.com"
-                className="ml-1 font-semibold text-[#16A34A] transition hover:text-[#15803D]"
+                className="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-5 transition duration-300 hover:-translate-y-1 hover:border-slate-300 hover:bg-white hover:shadow-lg hover:shadow-slate-900/10"
               >
-                leonelmadridsa@gmail.com
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#071426] text-xl text-white" aria-hidden="true">✉</span>
+                <span>
+                  <span className="block text-base font-black text-[#071426]">Correo electrónico</span>
+                  <span className="mt-1 block text-xs text-slate-600">leonelmadridsa@gmail.com</span>
+                </span>
               </a>
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* COMUNIDAD */}
-      <section className="bg-white py-12 lg:py-16">
-        <div className="mx-auto max-w-[1280px] px-4 lg:px-8">
-          <div className="relative overflow-hidden rounded-3xl bg-[#123D28] px-8 py-10 text-white shadow-xl md:px-12 md:py-12">
+            </div>
+            </div>
+            <div className="relative mt-8 overflow-hidden rounded-3xl bg-gradient-to-br from-[#0B1B33] via-[#123D28] to-[#14532D] px-6 py-7 text-white shadow-xl sm:px-8 sm:py-8">
             
             <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-lime-400/10 blur-3xl" />
             <div className="pointer-events-none absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-emerald-400/10 blur-3xl" />
 
-            <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+              <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-2xl">
                 <span className="inline-flex items-center gap-2 rounded-full bg-lime-400/10 px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-lime-400">
                   <span className="h-2 w-2 animate-pulse rounded-full bg-lime-400" />
@@ -105,55 +73,37 @@ export default function ContactoFooter() {
                 </p>
               </div>
 
-              <a
-                href={whatsappLink()}
+                <a
+                href={WHATSAPP_COMMUNITY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex shrink-0 items-center justify-center gap-3 rounded-2xl bg-lime-400 px-6 py-4 text-sm font-black text-[#071426] shadow-lg transition hover:-translate-y-1 hover:bg-lime-300"
+                className="inline-flex shrink-0 items-center justify-center gap-3 rounded-2xl bg-lime-400 px-6 py-4 text-sm font-black text-[#071426] shadow-lg shadow-lime-950/20 transition hover:-translate-y-1 hover:bg-lime-300 focus:outline-none focus:ring-4 focus:ring-lime-300/30"
               >
                 <span className="text-xl" aria-hidden="true">
                   💬
                 </span>
                 Unirme a WhatsApp
                 <span aria-hidden="true">↗</span>
-              </a>
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-slate-200 bg-white text-[#071426]">
+      <footer className="border-t border-slate-200 bg-[#FAF9F6] text-[#071426]">
         <div className="mx-auto max-w-[1280px] px-4 py-12 lg:px-8">
           <div className="grid gap-10 md:grid-cols-4">
             
             {/* Marca */}
             <div className="md:col-span-2">
-              <div className="flex items-center gap-2.5">
-                <div
-                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#16A34A] text-lg text-white"
-                  aria-hidden="true"
-                >
-                  ⚽
-                </div>
-
-                <span className="font-display text-2xl font-black">
-                  CANCHA<span className="text-[#16A34A]">YA</span>
-                </span>
-              </div>
+              <BrandLogo />
 
               <p className="mt-4 max-w-md text-sm leading-6 text-slate-500">
                 Tu cancha. Tu partido. Tu momento.
               </p>
 
-              <a
-                href={whatsappLink()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-xs font-bold text-[#071426] transition hover:bg-slate-100"
-              >
-                💬 Escríbenos por WhatsApp
-              </a>
             </div>
 
             {/* Navegación */}
@@ -213,7 +163,7 @@ export default function ContactoFooter() {
             </div>
 
             <p className="font-medium text-slate-600">
-              Hecho para quienes viven el fútbol. ⚽
+              Hecho para quienes viven el fútbol.
             </p>
           </div>
         </div>

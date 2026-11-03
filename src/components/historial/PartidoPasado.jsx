@@ -41,7 +41,7 @@ export default function PartidoPasado({ reserva, alGuardar }) {
         <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
           {fechaCorta(reserva.fecha)} · {cancha.nombre}
         </span>
-        <span className="rounded-full bg-emerald-900/60 px-3 py-1 text-[11px] font-bold text-slate-600">
+        <span className="rounded-full bg-emerald-900/60 px-3 py-1 text-[11px] font-bold text-slate-300">
           {FORMATOS[cancha.formato_juego] ?? cancha.formato_juego} · Finalizado
         </span>
       </div>
@@ -50,7 +50,7 @@ export default function PartidoPasado({ reserva, alGuardar }) {
       <div className="px-6 pb-4 pt-8">
         <div className="flex flex-col items-center justify-center gap-5 text-center sm:flex-row sm:gap-6">
           <div className="flex-1">
-            <span className="font-display text-lg font-bold text-slate-600">{resultado.equipo_a}</span>
+            <span className="font-display text-lg font-bold text-slate-200">{resultado.equipo_a}</span>
           </div>
           <div className="flex items-stretch gap-2">
             <span className="flex w-16 items-center justify-center rounded-xl bg-white px-3 py-2 ring-1 ring-inset ring-emerald-900/50">
@@ -66,7 +66,7 @@ export default function PartidoPasado({ reserva, alGuardar }) {
             </span>
           </div>
           <div className="flex-1">
-            <span className="font-display text-lg font-bold text-slate-600">{resultado.equipo_b}</span>
+            <span className="font-display text-lg font-bold text-slate-200">{resultado.equipo_b}</span>
           </div>
         </div>
       </div>
@@ -83,7 +83,7 @@ export default function PartidoPasado({ reserva, alGuardar }) {
       {/* Notas (pizarra) + fotos */}
       <div className="px-6 pb-6 pt-4">
         <div
-          className="rounded-2xl bg-white/70 p-5 ring-1 ring-inset ring-emerald-900/50"
+          className="rounded-2xl bg-white p-5 ring-1 ring-inset ring-emerald-900/50"
           style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(148,163,184,.08) 1px, transparent 0)', backgroundSize: '18px 18px' }}
         >
           <div className="flex items-center justify-between gap-3">
@@ -93,7 +93,7 @@ export default function PartidoPasado({ reserva, alGuardar }) {
             <button
               type="button"
               onClick={() => inputFoto.current?.click()}
-              className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-emerald-900/60 px-3 py-2 text-xs font-bold text-slate-600 transition hover:border-emerald-600 hover:text-emerald-600"
+              className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-slate-300 px-3 py-2 text-xs font-bold text-slate-600 transition hover:border-emerald-600 hover:text-emerald-700"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />

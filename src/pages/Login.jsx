@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { esAdmin } from '../lib/constants'
+import BrandLogo from '../components/BrandLogo'
 
 export default function Login() {
   const { signIn } = useAuth()
@@ -45,18 +46,17 @@ export default function Login() {
       </div>
 
       {/* TARJETA PRINCIPAL (GLASSMORPHISM) */}
-      <div className="relative w-full max-w-md rounded-3xl border border-emerald-500/20 bg-slate-900/80 p-8 text-white shadow-2xl shadow-emerald-950/50 backdrop-blur-2xl sm:p-10">
+      <div className="relative w-full max-w-md rounded-3xl border border-emerald-100 bg-[#F3FBEF] p-8 text-[#071426] shadow-2xl shadow-emerald-950/50 sm:p-10">
         {/* DECORACIÓN: Línea superior brillante */}
         <div className="absolute -top-px left-10 right-10 h-px bg-gradient-to-r from-transparent via-emerald-400 to-transparent"></div>
 
         {/* ENCABEZADO */}
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-950/60 px-3.5 py-1 text-xs font-black uppercase tracking-widest text-emerald-400 shadow-inner">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400"></span>
-            CanchaYa
+          <div className="flex justify-center">
+            <BrandLogo />
           </div>
-          <h1 className="mt-4 font-display text-3xl font-black tracking-tight text-white sm:text-4xl">¡Hola de nuevo!</h1>
-          <p className="mt-2 text-xs font-medium text-slate-400">Ingresa a tu cuenta para reservar tu cancha en segundos.</p>
+          <h1 className="mt-4 font-display text-3xl font-black tracking-tight text-[#071426] sm:text-4xl">¡Hola de nuevo!</h1>
+          <p className="mt-2 text-xs font-medium text-emerald-950/70">Ingresa a tu cuenta para reservar tu cancha en segundos.</p>
         </div>
 
         {/* FORMULARIO */}
@@ -72,7 +72,7 @@ export default function Login() {
 
           {/* CORREO */}
           <div>
-            <label htmlFor="email" className="mb-2 block text-xs font-black uppercase tracking-wider text-slate-300">
+            <label htmlFor="email" className="mb-2 block text-xs font-black uppercase tracking-wider text-emerald-950">
               Correo electrónico
             </label>
             <input
@@ -83,14 +83,14 @@ export default function Login() {
               autoFocus
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Ej: juan@correo.com"
-              className="w-full rounded-2xl border border-slate-700/80 bg-slate-950/60 px-4 py-3.5 text-sm font-semibold text-white shadow-inner transition-all placeholder:text-slate-500 focus:border-emerald-400 focus:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-emerald-400/20"
+              placeholder="Ej: juan@gmail.com"
+              className="w-full rounded-2xl border border-emerald-800/30 bg-white/80 px-4 py-3.5 text-sm font-semibold text-[#071426] shadow-inner transition-all placeholder:text-slate-500 focus:border-emerald-600 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600/20"
             />
           </div>
 
           {/* CONTRASEÑA */}
           <div>
-            <label htmlFor="password" className="mb-2 block text-xs font-black uppercase tracking-wider text-slate-300">
+            <label htmlFor="password" className="mb-2 block text-xs font-black uppercase tracking-wider text-emerald-950">
               Contraseña
             </label>
             <input
@@ -101,7 +101,7 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full rounded-2xl border border-slate-700/80 bg-slate-950/60 px-4 py-3.5 text-sm font-semibold text-white shadow-inner transition-all placeholder:text-slate-500 focus:border-emerald-400 focus:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-emerald-400/20"
+              className="w-full rounded-2xl border border-emerald-800/30 bg-white/80 px-4 py-3.5 text-sm font-semibold text-[#071426] shadow-inner transition-all placeholder:text-slate-500 focus:border-emerald-600 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600/20"
             />
           </div>
 
@@ -109,23 +109,23 @@ export default function Login() {
           <button
             type="submit"
             disabled={cargando}
-            className="group relative w-full overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 p-px text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-emerald-500/25 transition-all hover:scale-[1.01] hover:shadow-emerald-500/40 active:scale-[0.99] disabled:opacity-60"
+            className="group relative w-full overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-700 to-[#0B1B33] p-px text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-emerald-900/25 transition-all hover:scale-[1.01] hover:shadow-emerald-900/40 active:scale-[0.99] disabled:opacity-60"
           >
-            <div className="rounded-[15px] bg-slate-950/20 px-6 py-4 transition group-hover:bg-transparent">
+            <div className="rounded-[15px] bg-transparent px-6 py-4 transition group-hover:bg-white/10">
               <span className="flex items-center justify-center gap-2 font-black text-white">
-                {cargando ? 'Ingresando…' : 'Ingresar a jugar ⚽'}
+                {cargando ? 'Ingresando…' : 'Ingresar'}
               </span>
             </div>
           </button>
         </form>
 
         {/* PIE DE TARJETA */}
-        <div className="mt-8 border-t border-slate-800/80 pt-6 text-center">
-          <p className="text-xs font-medium text-slate-400">
+        <div className="mt-8 border-t border-emerald-800/20 pt-6 text-center">
+          <p className="text-xs font-medium text-emerald-950/70">
             ¿Aún no tienes cuenta?
             <Link
               to="/registro"
-              className="ml-1 font-bold text-emerald-400 transition hover:text-emerald-300 hover:underline"
+              className="ml-1 font-bold text-emerald-800 transition hover:text-emerald-950 hover:underline"
             >
               Regístrate gratis
             </Link>

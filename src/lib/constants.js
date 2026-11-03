@@ -1,4 +1,5 @@
-export const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '56912345678'
+export const WHATSAPP_NUMBER = '56963557583'
+export const WHATSAPP_COMMUNITY_URL = 'https://chat.whatsapp.com/C8lFeDQh11N6uRmCJEVL5G'
 
 // Bucket de Supabase Storage para fotos de partidos (media)
 export const STORAGE_BUCKET = import.meta.env.VITE_SUPABASE_STORAGE_BUCKET || 'canchasya-media'
@@ -13,14 +14,14 @@ export const TABLES = {
   reservaServicios: 'reservas_reserva_servicios_adicionales',
 }
 
-// Admins autorizados (equivalente a is_staff de Django). Vacío = todos los autenticados.
+// Administradores autorizados. Si está vacío, nadie obtiene acceso administrativo.
 export const ADMIN_EMAILS = (import.meta.env.VITE_ADMIN_EMAILS || '')
   .split(',')
   .map((e) => e.trim().toLowerCase())
   .filter(Boolean)
 
 export const esAdmin = (user) =>
-  Boolean(user) && (ADMIN_EMAILS.length === 0 || ADMIN_EMAILS.includes(user.email?.toLowerCase()))
+  Boolean(user?.email) && ADMIN_EMAILS.includes(user.email.toLowerCase())
 
 export const HORAS_TURNO = Array.from({ length: 15 }, (_, i) => `${String(i + 8).padStart(2, '0')}:00`)
 
@@ -57,10 +58,14 @@ export const IMAGENES_CANCHA = [
   '/img/canchas_4.jpg',
   '/img/canchas_5.jpg',
   '/img/canchas_6.jpg',
+  '/img/canchas_relleno1.jpg',
+  '/img/canchas_relleno2.jpg',
+  '/img/canchas_relleno3.jpg',
+  '/img/canchas_relleno4.jpg',
+  '/img/canchas_relleno5.jpg',
 ]
 
 export const fechaCorta = (iso) => {
   const [y, m, d] = iso.split('-')
   return `${d}/${m}/${y}`
 }
-

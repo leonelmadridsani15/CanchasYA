@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { ArrowRight, CircleDot, Lightbulb } from 'lucide-react'
 import { supabase } from '../../lib/supabaseClient'
 import { useAuth } from '../../context/AuthContext'
 import { TABLES, FORMATOS, SUPERFICIES, IMAGENES_CANCHA } from '../../lib/constants'
@@ -26,25 +27,25 @@ export default function CanchasSection() {
   }, [])
 
   return (
-    <section id="canchas" className="relative overflow-hidden bg-[#FAF9F6] py-20 lg:py-24">
+    <section id="canchas" className="relative overflow-hidden bg-[#FAF9F6] px-4 py-4 lg:px-8 lg:py-6">
       {/* DIFUMINACIONES VERDE CLARITO */}
       <div className="pointer-events-none absolute -left-32 top-20 h-80 w-80 rounded-full bg-emerald-400/15 blur-3xl"></div>
       <div className="pointer-events-none absolute -right-32 bottom-10 h-80 w-80 rounded-full bg-emerald-500/10 blur-3xl"></div>
 
-      <div className="relative mx-auto max-w-[1280px] px-4 lg:px-8">
+      <div className="relative mx-auto max-w-[1280px] rounded-[2rem] bg-[#123D28] p-6 shadow-2xl shadow-[#071426]/15 sm:p-10 lg:p-14">
         {/* ENCABEZADO */}
         <div className="mb-12 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <span className="text-xs font-black uppercase tracking-[0.25em] text-[#166534]">Elige tu cancha</span>
-            <h2 className="mt-3 font-display text-4xl font-black tracking-tight text-[#071426] sm:text-5xl">
+            <span className="text-xs font-black uppercase tracking-[0.25em] text-lime-300">Elige tu cancha</span>
+            <h2 className="mt-3 font-display text-4xl font-black tracking-tight text-white sm:text-5xl">
               Canchas disponibles
             </h2>
-            <p className="mt-4 max-w-xl text-sm leading-6 text-slate-600 sm:text-base">
+            <p className="mt-4 max-w-xl text-sm leading-6 text-slate-300 sm:text-base">
               Encuentra el espacio perfecto para tu equipo y reserva tu próximo partido.
             </p>
           </div>
-          <div className="w-fit rounded-full border border-emerald-900/10 bg-white/80 px-4 py-2 shadow-sm backdrop-blur-sm">
-            <span className="text-xs font-bold text-[#071426]">{canchas.length} canchas disponibles</span>
+          <div className="w-fit rounded-xl border border-emerald-300/20 bg-emerald-400/10 px-4 py-2 shadow-sm backdrop-blur-sm">
+            <span className="text-xs font-bold text-emerald-100">{canchas.length} canchas disponibles</span>
           </div>
         </div>
 
@@ -61,8 +62,8 @@ export default function CanchasSection() {
             </div>
           ) : canchas.length === 0 ? (
             <div className="col-span-full rounded-3xl border border-dashed border-slate-300 bg-white/50 p-16 text-center">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-800/10 text-3xl">
-                ⚽
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-800/10 text-emerald-700">
+                <CircleDot size={30} strokeWidth={1.8} />
               </div>
               <h3 className="mt-5 text-xl font-black text-[#071426]">No hay canchas disponibles</h3>
               <p className="mx-auto mt-2 max-w-md text-sm text-slate-600">
@@ -113,11 +114,11 @@ function TarjetaCancha({ cancha, index, autenticado }) {
 
         <div className="mt-5 flex flex-wrap gap-2">
           <span className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] font-semibold text-slate-300">
-            ⚽ {formato}
+            <span className="inline-flex items-center gap-1.5"><CircleDot size={14} /> {formato}</span>
           </span>
           {cancha.iluminacion_led && (
             <span className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] font-semibold text-slate-300">
-              💡 Iluminación
+              <span className="inline-flex items-center gap-1.5"><Lightbulb size={14} /> Iluminación</span>
             </span>
           )}
         </div>
@@ -141,7 +142,7 @@ function TarjetaCancha({ cancha, index, autenticado }) {
           className="flex w-full items-center justify-center gap-3 rounded-xl bg-[#16A34A] py-3.5 text-sm font-black text-white shadow-lg shadow-emerald-950/30 transition-all duration-300 hover:bg-lime-400 hover:text-[#071426]"
         >
           {autenticado ? 'Reservar cancha' : 'Iniciar sesión para reservar'}
-          <span className="text-lg">→</span>
+          <ArrowRight size={18} />
         </Link>
       </div>
     </article>

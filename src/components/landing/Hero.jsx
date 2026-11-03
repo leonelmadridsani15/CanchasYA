@@ -1,15 +1,34 @@
+import { useEffect, useState } from 'react'
+import { IMAGENES_CANCHA } from '../../lib/constants'
+
 export default function Hero() {
+  const [imagenActiva, setImagenActiva] = useState(0)
+
+  useEffect(() => {
+    const intervalo = window.setInterval(() => {
+      setImagenActiva((actual) => (actual + 1) % IMAGENES_CANCHA.length)
+    }, 5000)
+
+    return () => window.clearInterval(intervalo)
+  }, [])
+
   return (
     <section
       id="inicio"
       className="relative flex min-h-[520px] items-center overflow-hidden bg-[#071426] text-white lg:min-h-[560px]"
     >
-      {/* Imagen de fondo */}
-      <img
-        src="https://images.unsplash.com/photo-1553778263-73a83bab9b0c?auto=format&fit=crop&w=2200&q=90"
-        alt="Cancha de fútbol"
-        className="absolute inset-0 h-full w-full object-cover opacity-55"
-      />
+      {/* Imágenes de fondo con transición automática */}
+      {IMAGENES_CANCHA.map((imagen, index) => (
+        <img
+          key={imagen}
+          src={imagen}
+          alt=""
+          aria-hidden="true"
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
+            index === imagenActiva ? 'opacity-55' : 'opacity-0'
+          }`}
+        />
+      ))}
 
       {/* Oscurecimiento general */}
       <div className="absolute inset-0 bg-[#071426]/40"></div>

@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { supabase } from '../lib/supabaseClient'
+import BrandLogo from '../components/BrandLogo'
 
 export default function Registro() {
   const { signUp } = useAuth()
   const navigate = useNavigate()
-  const [form, setForm] = useState({ nombre: '', email: '', telefono: '', password: '' })
+  const [form, setForm] = useState({ nombre: '', email: '', password: '' })
   const [error, setError] = useState(null)
   const [mensaje, setMensaje] = useState(null)
   const [cargando, setCargando] = useState(false)
@@ -19,10 +21,14 @@ export default function Registro() {
     setError(null)
     setMensaje(null)
     setCargando(true)
-    const error = await signUp(form.email, form.password, form.nombre, form.telefono)
+    const error = await signUp(form.email, form.password, form.nombre, '')
     setCargando(false)
     if (error) {
-      setError(error.message)
+      if (/rate limit|email rate limit exceeded/i.test(error.message || '')) {
+        setError('Se alcanzó el límite temporal de correos de confirmación. Espera unos minutos antes de crear otra cuenta o utiliza un correo diferente.')
+      } else {
+        setError(error.message)
+      }
       return
     }
     // Si Supabase exige confirmación de correo, avisa en lugar de iniciar sesión
@@ -37,16 +43,18 @@ export default function Registro() {
   const campos = [
     { id: 'nombre', label: 'Nombre', type: 'text', placeholder: 'Ej: Juan Pérez' },
     { id: 'email', label: 'Correo electrónico', type: 'email', placeholder: 'Ej: juan@correo.com' },
-    { id: 'telefono', label: 'Teléfono', type: 'tel', placeholder: 'Ej: +56 9 1234 5678' },
     { id: 'password', label: 'Contraseña', type: 'password', placeholder: 'Mínimo 6 caracteres' },
   ]
 
   return (
-    <section className="min-h-screen bg-white px-5 pb-20 pt-36 text-slate-900 lg:pb-28">
-      <div className="mx-auto max-w-lg rounded-3xl border border-emerald-900/50 bg-emerald-950 p-7 text-white shadow-2xl sm:p-10">
-        <p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-600">Únete a CanchaYa</p>
+    <section className="min-h-screen bg-slate-950 px-5 pb-20 pt-36 text-slate-900 lg:pb-28">
+      <div className="mx-auto max-w-lg rounded-3xl border border-emerald-100 bg-[#F3FBEF] p-7 text-[#071426] shadow-2xl shadow-emerald-950/50 sm:p-10">
+        <div className="flex justify-center">
+          <BrandLogo />
+        </div>
+        <p className="mt-6 text-sm font-bold uppercase tracking-[0.2em] text-emerald-800">Únete a CanchaYa</p>
         <h1 className="mt-3 font-display text-4xl font-bold tracking-tight">Crea tu cuenta</h1>
-        <p className="mt-4 text-emerald-100">Guarda tus reservas y sigue tu historial de partidos.</p>
+        <p className="mt-4 text-emerald-950/70">Guarda tus reservas y sigue tu historial de partidos.</p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-5">
           {error && (
@@ -64,10 +72,10 @@ export default function Registro() {
                 id={campo.id}
                 type={campo.type}
                 required
-                placeholder={campo.placeholder}
+                placeholder={campo.id === 'email' ? 'Ej: juan@gmail.com' : campo.placeholder}
                 value={form[campo.id]}
                 onChange={actualizar(campo.id)}
-                className="w-full rounded-xl border border-emerald-900 bg-black/40 px-4 py-3.5 font-semibold text-white placeholder:text-emerald-200/40 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full rounded-xl border border-emerald-800/30 bg-white/80 px-4 py-3.5 font-semibold text-[#071426] placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-600"
               />
             </div>
           ))}
@@ -75,15 +83,15 @@ export default function Registro() {
           <button
             type="submit"
             disabled={cargando}
-            className="w-full rounded-2xl bg-emerald-600 px-6 py-4 font-extrabold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 disabled:opacity-60"
+            className="w-full rounded-2xl bg-emerald-700 px-6 py-4 font-extrabold text-white shadow-lg shadow-emerald-900/20 transition hover:bg-emerald-800 disabled:opacity-60"
           >
             {cargando ? 'Registrando…' : 'Registrarme'}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-emerald-100">
+        <p className="mt-6 text-center text-sm text-emerald-950/70">
           ¿Ya tienes cuenta?{' '}
-          <Link to="/login" className="font-bold text-emerald-600 hover:text-emerald-500">
+          <Link to="/login" className="font-bold text-emerald-800 hover:text-emerald-950">
             Ingresar
           </Link>
         </p>

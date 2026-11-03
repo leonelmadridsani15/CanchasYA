@@ -1,6 +1,7 @@
 import PromoBar from '../components/landing/PromoBar'
 import Navbar from '../components/landing/Navbar'
 import Hero from '../components/landing/Hero'
+import BeneficiosReserva from '../components/landing/BeneficiosReserva'
 import CanchasSection from '../components/landing/CanchasSection'
 import Instalaciones from '../components/landing/Instalaciones'
 import ComoFunciona from '../components/landing/ComoFunciona'
@@ -16,9 +17,10 @@ export default function Landing() {
       <Navbar />
       <main>
         <Hero />
-        <CanchasSection />
+        <BeneficiosReserva />
         <Instalaciones />
         <ComoFunciona />
+        <CanchasSection />
         <Nosotros />
         <Ubicacion />
         <ContactoFooter />

@@ -1,4 +1,6 @@
 
+import { whatsappLink } from '../../lib/constants'
+
 export default function Nosotros() { 
   return ( 
     <section id="nosotros" className="relative overflow-hidden bg-[#0B1B33] py-20 text-white lg:py-24"> 
@@ -32,24 +34,35 @@ export default function Nosotros() {
               </div> 
             </div> 
           </div> 
-          <div className="grid grid-cols-2 gap-4"> 
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-6"> 
-              <h3 className="text-base font-black">⚽ Pasión por el fútbol</h3> 
-              <p className="mt-2 text-xs leading-5 text-slate-400">Creamos CanchaYa pensando en quienes disfrutan reunirse, competir y compartir un buen partido.</p> 
-            </div> 
-            <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-6"> 
-              <h3 className="text-base font-black">⚡ Reserva fácil</h3> 
-              <p className="mt-2 text-xs leading-5 text-slate-300">Encuentra tu cancha, elige el horario que prefieras y confirma tu reserva de forma sencilla.</p> 
-            </div> 
-            <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-6"> 
-              <h3 className="text-base font-black">📅 Todo en un solo lugar</h3> 
-              <p className="mt-2 text-xs leading-5 text-slate-300">Consulta las canchas disponibles y organiza tu próximo partido sin tener que buscar en distintos lugares.</p> 
-            </div> 
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-6"> 
-              <h3 className="text-base font-black">🤝 Pensado para equipos</h3> 
-              <p className="mt-2 text-xs leading-5 text-slate-400">Una experiencia simple para que tú y tu equipo puedan preocuparse menos por organizar y disfrutar más del partido.</p> 
-            </div> 
-          </div> 
+          <div className="flex justify-center lg:justify-end">
+            <div className="relative w-full max-w-[340px] rotate-2 rounded-[3rem] border-[10px] border-[#071426] bg-[#10251F] p-4 shadow-2xl shadow-black/40">
+              <div className="absolute left-1/2 top-2 h-5 w-28 -translate-x-1/2 rounded-full bg-[#071426]" />
+              <div className="flex items-center justify-between px-2 pb-5 pt-2 text-xs font-bold text-emerald-100">
+                <span>CanchaYa</span>
+                <span>♡</span>
+              </div>
+              <p className="px-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-300">Reserva por WhatsApp</p>
+              <div className="mt-5 space-y-4">
+                <div className="mr-8 rounded-3xl rounded-tl-md bg-[#29443C] px-4 py-3 text-sm leading-5 text-white">
+                  ¡Hola! 👋 Quiero reservar una cancha para este fin de semana.
+                </div>
+                <div className="ml-8 rounded-3xl rounded-tr-md bg-[#CDE8B9] px-4 py-3 text-sm font-semibold leading-5 text-[#163A2B]">
+                  ¡Hola! ⚽ Claro, te ayudamos. ¿Qué día y horario necesitas?
+                </div>
+                <div className="mr-8 rounded-3xl rounded-tl-md bg-[#29443C] px-4 py-3 text-sm leading-5 text-white">
+                  Sábado a las 19:00, para fútbol 7.
+                </div>
+                <div className="ml-8 rounded-3xl rounded-tr-md bg-[#CDE8B9] px-4 py-3 text-sm font-semibold leading-5 text-[#163A2B]">
+                  Perfecto. Revisaremos la disponibilidad y confirmaremos tu reserva.
+                </div>
+              </div>
+              <a href={whatsappLink('Hola, quiero reservar una cancha.')} target="_blank" rel="noopener" className="mt-8 flex items-center justify-between rounded-full border border-emerald-200/50 px-4 py-3 text-xs text-emerald-100 transition hover:bg-emerald-400/10">
+                <span>Escribe tu mensaje…</span>
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#CDE8B9] text-lg font-black text-[#163A2B]">→</span>
+              </a>
+              <div className="mx-auto mt-5 h-1 w-24 rounded-full bg-emerald-100/40" />
+            </div>
+          </div>
         </div> 
       </div> 
     </section> 

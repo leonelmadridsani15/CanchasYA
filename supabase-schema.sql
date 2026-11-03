@@ -38,6 +38,8 @@ create table if not exists reservas_servicioadicional (
 create table if not exists reservas_reserva (
   id bigint generated always as identity primary key,
   usuario_auth_id uuid not null references auth.users(id) on delete cascade,
+  nombre_contacto varchar(120) not null default 'Cliente registrado',
+  email_contacto varchar(254) not null default '',
   cancha_id bigint not null references reservas_cancha(id) on delete cascade,
   telefono varchar(30) not null default '',
   fecha date not null,
@@ -49,6 +51,10 @@ create table if not exists reservas_reserva (
   creado_en timestamptz not null default now(),
   unique (cancha_id, fecha, hora_inicio)
 );
+
+alter table reservas_reserva
+  add column if not exists nombre_contacto varchar(120) not null default 'Cliente registrado',
+  add column if not exists email_contacto varchar(254) not null default '';
 
 create table if not exists reservas_reserva_servicios_adicionales (
   id bigint generated always as identity primary key,

@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { esAdmin } from '../../lib/constants'
+import BrandLogo from '../BrandLogo'
 
 const NAV_LINKS = [
   { hash: '#inicio', label: 'Inicio' },
@@ -63,22 +64,7 @@ export default function Navbar() {
     >
       <div className="mx-auto flex h-[76px] max-w-[1280px] items-center justify-between px-4 lg:px-8">
         
-        {/* LOGO CON ANIMACIÓN DE AGRANDADO */}
-        <Link
-          to="/"
-          className="group flex shrink-0 items-center gap-3 transition-transform duration-300 ease-out hover:scale-105 active:scale-95"
-          aria-label="CanchaYa, volver al inicio"
-        >
-          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#071426] text-xl shadow-md transition-transform duration-300 group-hover:rotate-6">
-            ⚽
-          </span>
-          <div className="leading-none">
-            <div className="font-display text-xl font-black tracking-tight text-[#071426]">
-              CANCHA<span className="text-[#16A34A]">YA</span>
-            </div>
-            <div className="mt-1 text-[9px] font-bold tracking-[0.25em] text-slate-400">VIVE EL PARTIDO</div>
-          </div>
-        </Link>
+        <BrandLogo />
 
         {/* NAVEGACIÓN DESKTOP CON FONDO VERDE CLARO EN HOVER */}
         <nav className="hidden items-center gap-2 lg:flex" aria-label="Navegación principal">
@@ -117,10 +103,14 @@ export default function Navbar() {
                     <p className="text-xs font-bold text-slate-400">Sesión como</p>
                     <p className="truncate text-sm font-bold text-[#071426]">{user.email}</p>
                   </div>
-                  <Link to="/mis-reservas" onClick={() => setPerfilAbierto(false)} className="block px-4 py-2.5 text-sm font-bold text-[#071426] transition hover:bg-emerald-50 hover:text-[#16A34A]">Mis reservas</Link>
-                  <Link to="/historial" onClick={() => setPerfilAbierto(false)} className="block px-4 py-2.5 text-sm font-bold text-[#071426] transition hover:bg-emerald-50 hover:text-[#16A34A]">Mi historial</Link>
                   {esAdmin(user) && (
                     <Link to="/dashboard" onClick={() => setPerfilAbierto(false)} className="block px-4 py-2.5 text-sm font-bold text-[#16A34A] transition hover:bg-emerald-50">Dashboard</Link>
+                  )}
+                  {!esAdmin(user) && (
+                    <>
+                      <Link to="/mis-reservas" onClick={() => setPerfilAbierto(false)} className="block px-4 py-2.5 text-sm font-bold text-[#071426] transition hover:bg-emerald-50 hover:text-[#16A34A]">Mis reservas</Link>
+                      <Link to="/historial" onClick={() => setPerfilAbierto(false)} className="block px-4 py-2.5 text-sm font-bold text-[#071426] transition hover:bg-emerald-50 hover:text-[#16A34A]">Mi historial</Link>
+                    </>
                   )}
                   <div className="my-1 border-t border-slate-100"></div>
                   <button type="button" onClick={() => { signOut(); setPerfilAbierto(false) }} className="w-full px-4 py-2.5 text-left text-sm font-bold text-rose-600 transition hover:bg-rose-50">Cerrar sesión</button>
@@ -129,8 +119,8 @@ export default function Navbar() {
             </div>
           ) : (
             <>
-              <Link to="/login" className="hidden rounded-full px-4 py-2 text-sm font-bold text-[#071426] transition-all hover:bg-emerald-50 hover:text-[#16A34A] lg:block">Ingresar</Link>
-              <Link to="/registro" className="hidden rounded-full bg-[#16A34A] px-5 py-2.5 text-sm font-black text-white shadow-md shadow-emerald-900/20 transition hover:bg-[#0f8a3d] hover:shadow-lg lg:block">Registrarse</Link>
+              <Link to="/login" className="hidden rounded-xl px-4 py-2 text-sm font-bold text-[#071426] transition-all hover:bg-emerald-50 hover:text-[#16A34A] lg:block">Ingresar</Link>
+              <Link to="/registro" className="hidden rounded-xl bg-[#16A34A] px-5 py-2.5 text-sm font-black text-white shadow-md shadow-emerald-900/20 transition hover:bg-[#0f8a3d] hover:shadow-lg lg:block">Registrarse</Link>
             </>
           )}
 
@@ -167,10 +157,14 @@ export default function Navbar() {
               <>
                 <p className="px-4 text-xs font-bold text-slate-400">Sesión como</p>
                 <p className="truncate px-4 pb-2 text-sm font-bold text-[#071426]">{user.email}</p>
-                <Link to="/mis-reservas" onClick={() => setMenuAbierto(false)} className="block rounded-xl px-4 py-3 text-sm font-bold text-[#071426] hover:bg-emerald-50">Mis reservas</Link>
-                <Link to="/historial" onClick={() => setMenuAbierto(false)} className="block rounded-xl px-4 py-3 text-sm font-bold text-[#071426] hover:bg-emerald-50">Mi historial</Link>
                 {esAdmin(user) && (
                   <Link to="/dashboard" onClick={() => setMenuAbierto(false)} className="block rounded-xl px-4 py-3 text-sm font-bold text-[#16A34A] hover:bg-emerald-50">Dashboard</Link>
+                )}
+                {!esAdmin(user) && (
+                  <>
+                    <Link to="/mis-reservas" onClick={() => setMenuAbierto(false)} className="block rounded-xl px-4 py-3 text-sm font-bold text-[#071426] hover:bg-emerald-50">Mis reservas</Link>
+                    <Link to="/historial" onClick={() => setMenuAbierto(false)} className="block rounded-xl px-4 py-3 text-sm font-bold text-[#071426] hover:bg-emerald-50">Mi historial</Link>
+                  </>
                 )}
                 <button type="button" onClick={() => signOut()} className="mt-2 w-full rounded-xl px-4 py-3 text-left text-sm font-bold text-rose-600 hover:bg-rose-50">Cerrar sesión</button>
               </>

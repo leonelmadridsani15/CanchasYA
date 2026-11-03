@@ -1,4 +1,4 @@
-import { ESTADOS_RESERVA, FORMATOS, fechaCorta, money } from '../../lib/constants'
+import { ESTADOS_RESERVA, FORMATOS, fechaCorta, money, whatsappLink } from '../../lib/constants'
 
 export default function ProximoPartido({ reserva }) {
   const cancha = reserva.cancha ?? {}
@@ -16,15 +16,15 @@ export default function ProximoPartido({ reserva }) {
 
       {/* Cabecera: fecha + badge de estado */}
       <div className="flex items-center justify-between gap-3">
-        <span className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-900/60 px-3 py-1 text-xs font-bold text-emerald-600">
+        <span className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-900/60 px-3 py-1 text-xs font-bold text-emerald-300">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5" aria-hidden="true">
             <rect x="3" y="4" width="18" height="18" rx="2" />
             <path d="M16 2v4M8 2v4M3 10h18" />
           </svg>
           {fechaCorta(reserva.fecha)}
         </span>
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-900/60 px-3 py-1 text-xs font-bold text-emerald-600">
-          <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-600"></span>
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-900/60 px-3 py-1 text-xs font-bold text-emerald-300">
+          <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-300"></span>
           {ESTADOS_RESERVA[reserva.estado] ?? reserva.estado}
         </span>
       </div>
@@ -33,7 +33,7 @@ export default function ProximoPartido({ reserva }) {
       <div className="mt-5 flex items-center justify-between gap-4">
         <div>
           <h3 className="font-display text-2xl font-bold text-white">{cancha.nombre}</h3>
-          <p className="mt-1 text-sm font-bold text-emerald-600">
+          <p className="mt-1 text-sm font-bold text-emerald-300">
             {FORMATOS[cancha.formato_juego] ?? cancha.formato_juego}
             <span className="mx-1 text-slate-500">•</span>
             <span className="font-semibold text-slate-500">{ESTADOS_RESERVA[reserva.estado] ?? reserva.estado}</span>
@@ -44,7 +44,7 @@ export default function ProximoPartido({ reserva }) {
             <circle cx="12" cy="12" r="10" />
             <path d="M12 6v6l4 2" />
           </svg>
-          <span className="font-display text-3xl font-extrabold tracking-tight text-white">
+          <span className="font-display text-3xl font-extrabold tracking-tight text-[#071426]">
             {reserva.hora_inicio.slice(0, 5)}
           </span>
         </div>
@@ -53,8 +53,8 @@ export default function ProximoPartido({ reserva }) {
       {/* Caja de pago: seña + saldo pendiente */}
       <div className="mt-6 grid grid-cols-2 gap-3">
         <div className="rounded-xl bg-emerald-900/40 p-4 ring-1 ring-inset ring-emerald-300/20">
-          <p className="text-xs font-bold uppercase tracking-wider text-emerald-600/80">Seña Pagada</p>
-          <p className="mt-1 font-display text-2xl font-bold text-emerald-600">{money(sena)}</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-emerald-300/80">Seña pagada</p>
+          <p className="mt-1 font-display text-2xl font-bold text-emerald-300">{money(sena)}</p>
         </div>
         <div className="rounded-xl bg-amber-400/10 p-4 ring-1 ring-inset ring-amber-400/20">
           <p className="text-xs font-bold uppercase tracking-wider text-amber-300/80">Saldo Pendiente en Cancha</p>
@@ -64,7 +64,7 @@ export default function ProximoPartido({ reserva }) {
 
       {/* Botón principal */}
       <a
-        href={'https://wa.me/?text=' + encodeURIComponent(mensaje)}
+        href={whatsappLink(mensaje)}
         target="_blank"
         rel="noopener"
         className="mt-6 flex items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700"
