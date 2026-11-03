@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { TABLES, money, fechaCorta } from '../lib/constants'
 import DivideTurno from '../components/reservas/DivideTurno'
 
 export default function ReservaConfirmada() {
   const { reservaId } = useParams()
-  const navigate = useNavigate()
   const [reserva, setReserva] = useState(null)
   const [error, setError] = useState(null)
   const [pagando, setPagando] = useState(false)
@@ -31,11 +30,20 @@ export default function ReservaConfirmada() {
     let initPoint = null
     try {
       const { data, error: fnError } = await supabase.functions.invoke('mercadopago-preference', {
-        body: { reservaId: Number(reservaId) },
+        body: {
+          reserva_id: String(reservaId),
+          precio_total: Number(reserva.cancha.precio_por_hora) / 2,
+          title: `Seña CanchaYa - ${reserva.cancha.nombre} (${reserva.fecha} ${reserva.hora_inicio})`,
+        },
       })
-      if (!fnError && data?.init_point) initPoint = data.init_point
-    } catch {
-      /* sin función desplegada o sin token: caemos al modo simulado */
+      if (fnError) throw new Error(fnError.message)
+      if (!data?.init_point) throw new Error('Mercado Pago no devolvió la URL de pago.')
+      initPoint = data.init_point
+    } catch (paymentError) {
+      console.error('No se pudo iniciar el pago de Mercado Pago:', paymentError)
+      setError(paymentError.message || 'No se pudo iniciar el pago.')
+      setPagando(false)
+      return
     }
 
     // 2) Si hay init_point, redirigimos al checkout de Mercado Pago.
@@ -45,19 +53,6 @@ export default function ReservaConfirmada() {
       return
     }
 
-    // 3) Modo simulado (equivalente a pago_simulado de Django)
-    const paymentId = 'PAY-TEST-' + Math.random().toString(36).slice(2, 10).toUpperCase()
-    const confirmationCode = 'CONF-' + Math.random().toString(36).slice(2, 12).toUpperCase()
-    const { error: updateError } = await supabase
-      .from(TABLES.reserva)
-      .update({ estado: 'confirmada', mercadopago_payment_id: paymentId, confirmation_code: confirmationCode })
-      .eq('id', reservaId)
-    if (updateError) {
-      setError(updateError.message)
-      setPagando(false)
-      return
-    }
-    navigate(`/pago-resultado/${reservaId}`)
   }
 
   if (error) {
